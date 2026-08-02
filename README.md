@@ -34,9 +34,11 @@ Agent/
 │   └── 02-chat_roles.py     # system 角色设定示例（翻译官）
 ├── requirements.txt         # Python 依赖
 ├── .env.example             # 环境变量配置示例
-└── .gitignore
-├── learning-plan-annotated.md    # 📖 学习计划 V3.0 官方文档标注版
-└── learning-plan-v4-optimized.md # 🚀 学习计划 V4.0 重构优化版
+├── .gitignore
+└── learning-plans/          # 📖 AI Agent 学习计划
+    ├── learning-plan-annotated.md   # V3.0 官方文档标注版
+    ├── learning-plan-v4-optimized.md # V4.0 重构优化版
+    └── blocked-urls-mirrors.md      # 🔗 被墙链接 → 替代链接对照表
 ```
 
 ## 🚀 环境准备
@@ -102,14 +104,17 @@ python Agent-demo/02-chat_roles.py  # system 角色设定：翻译官
 
 ## 🗺️ 学习计划
 
-本仓库包含两份 AI Agent 开发学习计划：
+本仓库包含完整的 AI Agent 开发学习计划（位于 `learning-plans/` 目录）：
 
 | 文件 | 说明 |
 | :--- | :--- |
-| [learning-plan-annotated.md](learning-plan-annotated.md) | V3.0 原版计划 + 每步标注必读官方文档链接 |
-| [learning-plan-v4-optimized.md](learning-plan-v4-optimized.md) | V4.0 重构版：优化节奏、增加调试/流式/复盘日、MCP 后置 |
+| [learning-plan-annotated.md](learning-plans/learning-plan-annotated.md) | V3.0 原版计划 + 每步标注必读官方文档链接 |
+| [learning-plan-v4-optimized.md](learning-plans/learning-plan-v4-optimized.md) | V4.0 重构版：优化节奏、增加调试/流式/复盘日、MCP 后置 |
+| [blocked-urls-mirrors.md](learning-plans/blocked-urls-mirrors.md) | 🔗 被墙链接对照表：OpenAI/Anthropic 官方链接 → 国内可访问替代 |
 
 > **V4.0 主要改进**：每天分三段（读文档→写代码→记笔记）、每周设复盘日、MCP 移至第 3 周（理解工具后再学）、新增流式输出和 Token 管理。
+>
+> 🇨🇳 **注意**：所有 OpenAI/Anthropic 官方文档链接已替换为国内可访问的替代来源。如需查阅原始文档，请参考 `blocked-urls-mirrors.md` 对照表挂代理访问。
 
 ## ⚖️ 免责声明
 

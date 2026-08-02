@@ -5,6 +5,8 @@
 > **使用方式**：每天分三段——📖 **读文档**（30min）→ 💻 **写代码**（1-2h）→ 📝 **记笔记**（15min）。
 >
 > **技术栈**：DeepSeek API（首选）| LangGraph（编排）| FastAPI（服务）| E2B（沙箱）
+>
+> 🇨🇳 **中国地区可用链接**：本文涉及的国外官方文档（OpenAI、Anthropic）均替换为国内可访问的替代来源 —— DeepSeek 官方文档（兼容 OpenAI 格式）或 GitHub 仓库（国内可直连）。如确需查阅原始文档，请自备代理工具。
 
 ---
 
@@ -35,7 +37,7 @@
 
 📖 **先读**（30min）：
 - [DeepSeek API 文档 - 快速开始](https://platform.deepseek.com/api-docs/) — 获取 API Key，看 `/chat/completions` 端点
-- [OpenAI Chat API 参考](https://platform.openai.com/docs/api-reference/chat/create) — 理解每个请求参数（`model`、`messages`、`temperature`、`max_tokens`）的含义。**这是理解后续一切的基础**
+- [DeepSeek Chat API 参考](https://api-docs.deepseek.com/api/chat-completions) — 理解每个请求参数（`model`、`messages`、`temperature`、`max_tokens`）的含义。**这是理解后续一切的基础**（DeepSeek API 与 OpenAI 完全兼容，概念通用）
 - [requests 库 - POST 请求](https://requests.readthedocs.io/en/latest/user/quickstart/#more-complicated-post-requests) — headers 和 json 参数怎么传
 
 💻 **写代码**：
@@ -57,8 +59,8 @@ API_KEY = os.getenv("DEEPSEEK_API_KEY")
 **产出**：`chat_roles.py`
 
 📖 **先读**（30min）：
-- [OpenAI 消息结构文档](https://platform.openai.com/docs/api-reference/chat/create#chat-create-messages) — **核心！** 理解 `role` 四种取值：`system`（设定行为）、`user`（用户输入）、`assistant`（AI 回复）、`tool`（工具结果）。每一类消息的 `content` 字段有什么不同
-- [Anthropic System Prompts 指南](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/system-prompts) — System prompt 的设计哲学（通用，不限于 Anthropic）
+- [DeepSeek 消息结构文档](https://api-docs.deepseek.com/api/chat-completions) — **核心！** 理解 `role` 四种取值：`system`（设定行为）、`user`（用户输入）、`assistant`（AI 回复）、`tool`（工具结果）。每一类消息的 `content` 字段有什么不同（DeepSeek 与 OpenAI 消息格式完全兼容）
+- [Prompt Engineering 指南（GitHub）](https://github.com/anthropics/anthropic-cookbook) — System prompt 的设计哲学，Anthropic 官方 Cookbook 中的提示词示例（GitHub 国内可直连）
 - [DeepSeek Prompt 指南](https://platform.deepseek.com/api-docs/guides/prompting) — 具体到 DeepSeek 的最佳实践
 
 💻 **写代码**：封装函数，传入不同的 `system` prompt（翻译官 / 代码审查员 / 情感分析师），观察同一问题得到的不同回复。
@@ -72,7 +74,7 @@ API_KEY = os.getenv("DEEPSEEK_API_KEY")
 **产出**：`tools.py`
 
 📖 **先读**（30min）：
-- [OpenAI Function Calling 指南](https://platform.openai.com/docs/guides/function-calling) — **本周最重要的文档！** 理解：① `tools` 参数的结构 ② `tool_choice` 参数（auto/none/required）③ `tool_calls` 响应的格式 ④ 每个字段（`name`、`description`、`parameters`、`required`）的设计意图
+- [OpenAI Function Calling 指南](https://api-docs.deepseek.com/guides/function_calling) — **本周最重要的文档！** 理解：① `tools` 参数的结构 ② `tool_choice` 参数（auto/none/required）③ `tool_calls` 响应的格式 ④ 每个字段（`name`、`description`、`parameters`、`required`）的设计意图
 - [JSON Schema 入门](https://json-schema.org/learn/getting-started-step-by-step) — 理解 `type`、`properties`、`required`、`enum` 的语义
 - [DeepSeek Tool Calling 文档](https://platform.deepseek.com/api-docs/guides/function-calling) — DeepSeek 的工具调用能力
 
@@ -91,8 +93,8 @@ API_KEY = os.getenv("DEEPSEEK_API_KEY")
 
 📖 **先读**（30min）：
 - [ReAct 论文 (Yao et al., 2022)](https://arxiv.org/abs/2210.03629) — 读 Abstract + Figure 1，理解 Thought → Action → Observation 循环
-- [OpenAI Tool Calling 完整流程](https://platform.openai.com/docs/guides/function-calling#step-by-step) — 理解四步循环：send → receive tool_call → execute → append result → send again
-- [Anthropic Tool Use 实现](https://docs.anthropic.com/en/docs/build-with-claude/tool-use#how-tool-use-works) — 对比 Anthropic 的 tool_use 块与 OpenAI 的 tool_calls 有什么不同
+- [OpenAI Tool Calling 完整流程](https://api-docs.deepseek.com/guides/function_calling) — 理解四步循环：send → receive tool_call → execute → append result → send again
+- [Anthropic Tool Use 示例（GitHub）](https://github.com/anthropics/anthropic-cookbook) — 对比 Anthropic 的 tool_use 块与 OpenAI 的 tool_calls 有什么不同，看官方 Cookbook 中的工具调用示例
 - 参考你已有的 [03.1-llm_tools_ReAct.py](Agent-demo/03.1-llm_tools_ReAct.py)
 
 💻 **写代码**：`while True` 循环的核心逻辑：
@@ -121,7 +123,7 @@ while step < max_steps:
 **产出**：`react_loop_v2.py`（增强版）
 
 📖 **先读**（30min）：
-- [OpenAI Error Codes](https://platform.openai.com/docs/guides/error-codes) — 429（限流）、401（认证失败）、503（服务过载）怎么处理
+- [API 错误处理](https://api-docs.deepseek.com/quick_start/error_codes) — DeepSeek 错误码说明：429（限流）、401（认证失败）、503（服务过载）怎么处理。所有兼容 OpenAI 格式的 API 返回相同的标准 HTTP 状态码
 - [Tenacity 重试库](https://tenacity.readthedocs.io/en/latest/) — 指数退避重试（exponential backoff）
 - [Python Logging 官方文档](https://docs.python.org/3/howto/logging.html) — 不要用 print，用 logging 打日志
 
@@ -140,10 +142,9 @@ while step < max_steps:
 **产出**：`stream_demo.py` + `token_counter.py`
 
 📖 **先读**（30min）：
-- [OpenAI Streaming 文档](https://platform.openai.com/docs/api-reference/streaming) — 理解 SSE（Server-Sent Events）和 `stream=True` 参数
+- [DeepSeek Streaming 文档](https://api-docs.deepseek.com/guides/streaming) — 理解 SSE（Server-Sent Events）和 `stream=True` 参数
 - [DeepSeek Streaming 示例](https://platform.deepseek.com/api-docs/guides/streaming) — DeepSeek 的流式实现
-- [tiktoken 库](https://github.com/openai/tiktoken) — Token 计数工具。理解 token ≠ 字符，中文一个字符可能 = 2-3 个 token
-- [OpenAI Token 计算](https://platform.openai.com/tokenizer) — 在线 Tokenizer 可视化
+- [tiktoken 库（GitHub）](https://github.com/openai/tiktoken) — Token 计数 Python 库，国内可直连。理解 token ≠ 字符，中文一个字符可能 = 2-3 个 token
 
 💻 **写代码**：
 1. `stream_demo.py`：用 `stream=True` 实现逐字打印效果（像 ChatGPT 那样）
@@ -158,7 +159,7 @@ while step < max_steps:
 **产出**：`week1/` 文件夹整理 + 一篇周报笔记
 
 📖 **选读**（进阶）：
-- [OpenAI Cookbook - Tool Calling 示例](https://cookbook.openai.com/examples/how_to_call_functions_with_chat_models) — 看看官方的最佳实践怎么写
+- [OpenAI Cookbook（GitHub）](https://github.com/openai/openai-cookbook) — 官方最佳实践示例，GitHub 国内可直连
 - [Lilian Weng - LLM Powered Autonomous Agents](https://lilianweng.github.io/posts/2023-06-23-agent/) — 一篇经典的 Agent 综述博客，读一遍建立全局视野（这周可能只看懂 30%，没关系，后面会回来看）
 
 💻 **整理**：
@@ -185,7 +186,7 @@ while step < max_steps:
 **产出**：`embedding_demo.py`
 
 📖 **先读**（30min）：
-- [OpenAI Embeddings 指南](https://platform.openai.com/docs/guides/embeddings) — 理解什么是 embedding、嵌入向量的几何含义、为什么用余弦相似度
+- [Sentence-Transformers 文档 - Embeddings 概念](https://www.sbert.net/docs/quickstart.html) — 理解什么是 embedding、嵌入向量的几何含义、为什么用余弦相似度（本地运行，无需 API）
 - [Sentence-Transformers 快速入门](https://www.sbert.net/docs/quickstart.html) — `model.encode()` 把一句话变成 384 维浮点数数组
 - [NumPy 向量运算](https://numpy.org/doc/stable/user/quickstart.html) — `np.dot` 算余弦相似度
 
@@ -287,7 +288,7 @@ class HybridSearcher:
 **产出**：`rag_tool.py`
 
 📖 **先读**（20min）：
-- [OpenAI Tool Description 最佳实践](https://platform.openai.com/docs/guides/function-calling#function-definition-best-practices) — 工具描述怎么写 LLM 才能用对
+- [DeepSeek Tool Description 最佳实践](https://api-docs.deepseek.com/guides/function_calling) — 工具描述怎么写 LLM 才能用对
 - 回看 Day 3 的工具 Schema 定义，确保格式一致
 
 💻 **写代码**：将 HybridSearcher 封装成一个标准的 Tool Schema：
@@ -856,9 +857,9 @@ services:
 | 类别 | 名称 | 链接 | 优先级 |
 | :--- | :--- | :--- | :--- |
 | **LLM API** | DeepSeek API 文档 | `https://platform.deepseek.com/api-docs` | ⭐⭐⭐ |
-| **LLM API** | OpenAI API Reference | `https://platform.openai.com/docs/api-reference` | ⭐⭐⭐ |
-| **LLM API** | OpenAI Function Calling 指南 | `https://platform.openai.com/docs/guides/function-calling` | ⭐⭐⭐ |
-| **LLM API** | Anthropic API / Tool Use | `https://docs.anthropic.com/en/api` | ⭐⭐ |
+| **LLM API** | DeepSeek API 文档（兼容 OpenAI 格式） | `https://api-docs.deepseek.com/` | ⭐⭐⭐ |
+| **LLM API** | DeepSeek Function Calling 指南 | `https://api-docs.deepseek.com/guides/function_calling` | ⭐⭐⭐ |
+| **LLM API** | Anthropic Cookbook（GitHub，国内可直连） | `https://github.com/anthropics/anthropic-cookbook` | ⭐⭐ |
 | **协议** | MCP 官方文档 | `https://modelcontextprotocol.io/introduction` | ⭐⭐⭐ |
 | **协议** | MCP 协议规范 (详细) | `https://spec.modelcontextprotocol.io/` | ⭐⭐ |
 | **协议** | MCP Python SDK | `https://github.com/modelcontextprotocol/python-sdk` | ⭐⭐⭐ |

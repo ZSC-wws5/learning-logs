@@ -4,6 +4,8 @@
 > **技术栈替换**：把教程里的 OpenAI 换成 **DeepSeek API**（便宜/国内友好）或 **SiliconFlow**（聚合平台）。
 >
 > ⚠️ **本书标注说明**：📖 = 必读官方文档 | 🔧 = API 参考 | 🧪 = 动手实验
+>
+> 🇨🇳 **中国地区可用性**：本文中 OpenAI/Anthropic 官方文档链接均已替换为国内可访问的替代来源 —— DeepSeek 文档（兼容 OpenAI 格式）或 GitHub 仓库。如确需查阅原始文档，请自备代理工具。
 
 ---
 
@@ -14,26 +16,26 @@
 - [X] **Day 1 (API 调通)** ：写 `call_llm.py`。用 `requests` 库调用 DeepSeek API，打印出 `choices[0].message.content`。**代码量 ≤ 20 行**。
     > 📖 **必读文档**：
     > - [DeepSeek API 官方文档](https://platform.deepseek.com/api-docs/) — 看 `/chat/completions` 端点
-    > - [OpenAI Chat Completions API 参考](https://platform.openai.com/docs/api-reference/chat) — DeepSeek 兼容 OpenAI 格式，理解 `messages`、`model`、`temperature` 字段的含义
+    > - [DeepSeek Chat API 参考](https://api-docs.deepseek.com/api/chat-completions) — DeepSeek 兼容 OpenAI 格式，理解 `messages`、`model`、`temperature` 字段的含义（国内可直连）
     > - [requests 库快速入门](https://requests.readthedocs.io/en/latest/user/quickstart/) — 看 POST 请求和 headers 怎么传
 
 - [X] **Day 2 (角色扮演)** ：写 `chat_roles.py`。封装一个函数，分别传入 `system`（你是个翻译官）和 `user`（你好），观察输出差异。理解"系统提示词"的绝对控制权。
     > 📖 **必读文档**：
-    > - [OpenAI Chat Completions 消息结构](https://platform.openai.com/docs/api-reference/chat/create#chat-create-messages) — 理解 `role` 字段的四种取值：`system`、`user`、`assistant`、`tool`
-    > - [Anthropic System Prompts 最佳实践](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/system-prompts) — 虽然不是 OpenAI，但 system prompt 设计理念是通用的
+    > - [DeepSeek 消息结构文档](https://api-docs.deepseek.com/api/chat-completions) — 理解 `role` 字段的四种取值：`system`、`user`、`assistant`、`tool`（DeepSeek 与 OpenAI 消息格式完全兼容）
+    > - [Prompt Engineering 指南（GitHub）](https://github.com/anthropics/anthropic-cookbook) — Anthropic 官方 Cookbook 中的提示词示例（GitHub 国内可直连）
     > - [DeepSeek 提示词指南](https://platform.deepseek.com/api-docs/) — 看 Prompting 章节
 
 - [X] **Day 3 (工具定义)** ：写 `tools.py`。定义 2 个 JSON Schema 格式的工具：`get_current_time` 和 `calculator`。**重点**：把 Schema 写成严格的 JSON 结构。
     > 📖 **必读文档**：
-    > - [OpenAI Function Calling / Tools 官方指南](https://platform.openai.com/docs/guides/function-calling) — **极其重要！** 这是理解 `tools` 参数和 `tool_calls` 响应的核心文档。每一个 JSON 字段（`type`、`function`、`parameters`、`required`）为什么要这么写，这里全有解释
+    > - [OpenAI Function Calling / Tools 官方指南](https://api-docs.deepseek.com/guides/function_calling) — **极其重要！** 这是理解 `tools` 参数和 `tool_calls` 响应的核心文档。每一个 JSON 字段（`type`、`function`、`parameters`、`required`）为什么要这么写，这里全有解释
     > - [JSON Schema 规范](https://json-schema.org/learn/getting-started-step-by-step) — 理解 `type`、`properties`、`required` 的 JSON Schema 语法
     > - [DeepSeek Tool Calling 文档](https://platform.deepseek.com/api-docs/guides/function-calling) — DeepSeek 的工具调用兼容 OpenAI 格式
 
 - [X] **Day 4 (手撕 ReAct 循环)** ：写 `react_loop.py`（核心！）。一个 `while` 循环：① 拼装消息列表 ② 调 API ③ 若返回 `tool_calls` 则执行本地函数 ④ 追加结果再次调 API。**代码量 150 行**。
     > 📖 **必读文档**：
-    > - [OpenAI Tool Calling 完整流程](https://platform.openai.com/docs/guides/function-calling?lang=python) — 看 "Step-by-step" 部分，理解 ① send→② receive tool_call→③ append result→④ send again 这个循环
+    > - [OpenAI Tool Calling 完整流程](https://api-docs.deepseek.com/guides/function_calling) — 看 "Step-by-step" 部分，理解 ① send→② receive tool_call→③ append result→④ send again 这个循环
     > - [ReAct 原始论文 (Yao et al., 2022)](https://arxiv.org/abs/2210.03629) — 读 Abstract + Figure 1 即可，理解 Reasoning + Acting 交替的核心思想
-    > - [Anthropic Tool Use 文档](https://docs.anthropic.com/en/docs/build-with-claude/tool-use) — 对比 Anthropic 的实现方式，理解不同模型工具调用的异同
+    > - [Anthropic Tool Use 示例（GitHub）](https://github.com/anthropics/anthropic-cookbook) — 对比 Anthropic 的实现方式，理解不同模型工具调用的异同，看官方 Cookbook 中的示例
 
 - [ ] **Day 5 (MCP 初体验)** ：安装 Node.js，跑通官方 MCP `filesystem` Server。在终端输入 `npx -y @modelcontextprotocol/server-filesystem /tmp` 看它是否启动成功。
     > 📖 **必读文档**：
@@ -50,7 +52,7 @@
 
 - [ ] **Day 7 (实验与笔记)** ：跑通路线图 B 的"实验 1-1"，故意去掉工具结果传给模型，记录模型"胡言乱语"的截图。在 GitHub 建仓库，提交 `week1` 文件夹。
     > 📖 **必读文档**：
-    > - [OpenAI Error Handling 文档](https://platform.openai.com/docs/guides/error-codes) — 理解常见 API 错误码（429 限流、401 认证失败等）
+    > - [API 错误处理](https://api-docs.deepseek.com/quick_start/error_codes) — DeepSeek 错误码说明：429（限流）、401（认证失败）、503（服务过载）
     > - [Git 入门 - 廖雪峰教程](https://www.liaoxuefeng.com/wiki/896043488029600) — 如果 Git 还不熟，看前 6 章
 
 ---
@@ -62,7 +64,7 @@
 - [ ] **Day 8 (向量化基础)** ：写 `embedding_demo.py`。用 `sentence-transformers/all-MiniLM-L6-v2` 将 3 句话转成向量，用 `numpy` 计算两两之间的余弦相似度。
     > 📖 **必读文档**：
     > - [Sentence-Transformers 官方文档](https://www.sbert.net/docs/quickstart.html) — 看 "Quickstart" 和 "Computing Sentence Embeddings"
-    > - [OpenAI Embeddings API](https://platform.openai.com/docs/guides/embeddings) — 理解什么是 embedding 向量、为什么用余弦相似度衡量语义距离
+    > - [Sentence-Transformers 文档 - Embeddings 概念](https://www.sbert.net/docs/quickstart.html) — 理解什么是 embedding 向量、为什么用余弦相似度（本地运行，无需 API）
     > - [余弦相似度 - 维基百科](https://en.wikipedia.org/wiki/Cosine_similarity) — 理解数学公式及为什么用余弦而非欧氏距离
     > - [NumPy 快速入门](https://numpy.org/doc/stable/user/quickstart.html) — 看数组运算和 `np.dot` 用法
 
@@ -93,7 +95,7 @@
 
 - [ ] **Day 13 (挂载 RAG 工具)** ：将 Day 9-12 做的检索器，封装成 `rag_query` 工具函数。在控制台手动测试：输入问题 -> 检索 -> 调 LLM 回答。
     > 📖 **必读文档**：
-    > - [OpenAI Tool Schema 定义最佳实践](https://platform.openai.com/docs/guides/function-calling#function-definition-best-practices) — 写工具描述时，如何让 LLM 更好地理解和使用工具
+    > - [DeepSeek Tool Schema 定义最佳实践](https://api-docs.deepseek.com/guides/function_calling) — 写工具描述时，如何让 LLM 更好地理解和使用工具
     > - [RAG 管道设计模式](https://www.llamaindex.ai/blog/a-cheat-sheet-and-some-recipes-for-building-advanced-rag-803a9d94c41) — LlamaIndex 的 RAG Cheat Sheet
 
 - [ ] **Day 14 (集成测试)** ：把上周的 `react_loop.py` 拉过来，把 `rag_query` 加入工具列表。测试一个"需要查资料的数学题"（比如"2024年诺贝尔物理学奖得主是谁？计算他年龄的平方"）。
@@ -267,8 +269,8 @@
 | 类别 | 名称 | 直达链接/命令 |
 | :--- | :--- | :--- |
 | **大模型 API** | DeepSeek (首选) | `https://platform.deepseek.com/api-docs` |
-| **大模型 API** | OpenAI API Reference | `https://platform.openai.com/docs/api-reference` |
-| **大模型 API** | Anthropic API Docs | `https://docs.anthropic.com/en/api` |
+| **大模型 API** | DeepSeek API 文档（兼容 OpenAI 格式） | `https://api-docs.deepseek.com/` |
+| **大模型 API** | Anthropic Cookbook（GitHub，国内可直连） | `https://github.com/anthropics/anthropic-cookbook` |
 | **MCP 协议** | MCP 官方文档 | `https://modelcontextprotocol.io/introduction` |
 | **MCP 协议** | MCP 协议规范 | `https://spec.modelcontextprotocol.io/` |
 | **MCP Server** | 本地文件系统 (测试用) | 终端执行 `npx -y @modelcontextprotocol/server-filesystem /tmp` |
