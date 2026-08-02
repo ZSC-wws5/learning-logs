@@ -35,6 +35,8 @@ Agent/
 ├── requirements.txt         # Python 依赖
 ├── .env.example             # 环境变量配置示例
 └── .gitignore
+├── learning-plan-annotated.md    # 📖 学习计划 V3.0 官方文档标注版
+└── learning-plan-v4-optimized.md # 🚀 学习计划 V4.0 重构优化版
 ```
 
 ## 🚀 环境准备
@@ -97,6 +99,17 @@ python Agent-demo/02-chat_roles.py  # system 角色设定：翻译官
 3. **`learning/04`**：文件读写，让程序能持久化数据
 4. **`learning/02`、`learning/03`**：异步编程 + aiohttp 网络请求（调用 AI 接口的关键）
 5. **`learning/06` → `Agent-demo/`**：实战 —— 调用 LLM，并用 system 角色让 AI 扮演不同角色
+
+## 🗺️ 学习计划
+
+本仓库包含两份 AI Agent 开发学习计划：
+
+| 文件 | 说明 |
+| :--- | :--- |
+| [learning-plan-annotated.md](learning-plan-annotated.md) | V3.0 原版计划 + 每步标注必读官方文档链接 |
+| [learning-plan-v4-optimized.md](learning-plan-v4-optimized.md) | V4.0 重构版：优化节奏、增加调试/流式/复盘日、MCP 后置 |
+
+> **V4.0 主要改进**：每天分三段（读文档→写代码→记笔记）、每周设复盘日、MCP 移至第 3 周（理解工具后再学）、新增流式输出和 Token 管理。
 
 ## ⚖️ 免责声明
 
