@@ -22,7 +22,7 @@ async def call_ds(
     url = BASE_URL+"chat/completions"
     headers = { 
         "Authorization": f"Bearer {DEEPSEEK_API_KEY}",
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
     }
     payload = {
         "model" : MODEL,
