@@ -37,11 +37,11 @@
 
 📖 **先读**（30min）：
 
-- [DeepSeek API 文档 - 快速开始](https://platform.deepseek.com/api-docs/) — 获取 API Key，看 `/chat/completions` 端点
-- [DeepSeek Chat API 参考](https://api-docs.deepseek.com/api/chat-completions) — 理解每个请求参数（`model`、`messages`、`temperature`、`max_tokens`）的含义。**这是理解后续一切的基础**（DeepSeek API 与 OpenAI 完全兼容，概念通用）
+- [DeepSeek API 文档 - 快速开始](https://api-docs.deepseek.com/zh-cn/) — 获取 API Key（访问 https://platform.deepseek.com/api_keys 创建），看首页"Your First API Call"的 Python 示例
+- [DeepSeek Chat Completion 创建接口](https://api-docs.deepseek.com/zh-cn/api/create-chat-completion/) — 理解每个请求参数（`model`、`messages`、`temperature`、`max_tokens`）的含义。**这是理解后续一切的基础**
 - [requests 库 - POST 请求](https://requests.readthedocs.io/en/latest/user/quickstart/#more-complicated-post-requests) — headers 和 json 参数怎么传
 
-💻 **写代码**：
+[]💻 **写代码**：
 
 ```python
 # call_llm.py —— 只做一件事：发请求，打印回复
@@ -54,6 +54,12 @@ API_KEY = os.getenv("DEEPSEEK_API_KEY")
 
 📝 **笔记**：记录 `messages` 的结构、请求头的格式、返回 JSON 的层级结构。
 
+- [ ] 📖 阅读 DeepSeek API 文档，注册并获取 API Key，设置环境变量 `DEEPSEEK_API_KEY`
+- [ ] 📖 阅读 Chat Completion 接口文档，理解 `model`/`messages`/`temperature`/`max_tokens` 参数
+- [ ] 📖 阅读 requests 库 POST 请求用法
+- [ ] 💻 创建 `call_llm.py`（≤20 行），发送第一个 Chat Completion 请求并打印回复
+- [ ] 📝 记录 `messages` 结构、请求头格式、返回 JSON 的层级结构
+
 ---
 
 ### Day 2 · 消息结构深入 + 角色扮演
@@ -62,13 +68,20 @@ API_KEY = os.getenv("DEEPSEEK_API_KEY")
 
 📖 **先读**（30min）：
 
-- [DeepSeek 消息结构文档](https://api-docs.deepseek.com/api/chat-completions) — **核心！**  理解 `role` 四种取值：`system`（设定行为）、`user`（用户输入）、`assistant`（AI 回复）、`tool`（工具结果）。每一类消息的 `content` 字段有什么不同（DeepSeek 与 OpenAI 消息格式完全兼容）
+- [DeepSeek 消息结构文档](https://api-docs.deepseek.com/zh-cn/api/create-chat-completion/) — **核心！**  理解 `role` 四种取值：`system`（设定行为）、`user`（用户输入）、`assistant`（AI 回复）、`tool`（工具结果）。每一类消息的 `content` 字段有什么不同
 - [Prompt Engineering 指南（GitHub）](https://github.com/anthropics/anthropic-cookbook) — System prompt 的设计哲学，Anthropic 官方 Cookbook 中的提示词示例（GitHub 国内可直连）
-- [DeepSeek Prompt 指南](https://platform.deepseek.com/api-docs/guides/prompting) — 具体到 DeepSeek 的最佳实践
+- DeepSeek 提示词最佳实践已整合到[官方文档首页](https://api-docs.deepseek.com/zh-cn/)的快速开始示例中
 
 💻 **写代码**：封装函数，传入不同的 `system` prompt（翻译官 / 代码审查员 / 情感分析师），观察同一问题得到的不同回复。
 
 📝 **笔记**：回答"为什么 system prompt 能控制模型行为？它与 user prompt 的本质区别是什么？"
+
+- [ ] 📖 精读 DeepSeek 消息结构文档，理解 `system`/`user`/`assistant`/`tool` 四种 role
+- [ ] 📖 浏览 Anthropic Cookbook 中 Prompt Engineering 示例
+- [ ] 💻 封装 `call_llm()` 函数，接受 `system_prompt` 和 `user_message` 参数
+- [ ] 💻 创建 `chat_roles.py`，测试 3 种角色：翻译官 / 代码审查员 / 情感分析师
+- [ ] 💻 用同一问题测试不同 system prompt，对比输出差异
+- [ ] 📝 回答：system prompt 与 user prompt 的本质区别
 
 ---
 
@@ -78,17 +91,26 @@ API_KEY = os.getenv("DEEPSEEK_API_KEY")
 
 📖 **先读**（30min）：
 
-- [OpenAI Function Calling 指南](https://api-docs.deepseek.com/guides/function_calling) — **本周最重要的文档！**  理解：① `tools` 参数的结构 ② `tool_choice` 参数（auto/none/required）③ `tool_calls` 响应的格式 ④ 每个字段（`name`、`description`、`parameters`、`required`）的设计意图
+- [DeepSeek Tool Calls 指南](https://api-docs.deepseek.com/zh-cn/guides/tool_calls/) — **本周最重要的文档！**  理解：① `tools` 参数的结构 ② `tool_choice` 参数（auto/none/required）③ `tool_calls` 响应的格式 ④ 每个字段（`name`、`description`、`parameters`、`required`）的设计意图
 - [JSON Schema 入门](https://json-schema.org/learn/getting-started-step-by-step) — 理解 `type`、`properties`、`required`、`enum` 的语义
-- [DeepSeek Tool Calling 文档](https://platform.deepseek.com/api-docs/guides/function-calling) — DeepSeek 的工具调用能力
+- [DeepSeek Tool Calling 中文文档](https://api-docs.deepseek.com/zh-cn/guides/tool_calls/) — 含完整 Python 示例
 
-💻 **写代码**：定义至少 3 个工具 Schema：
+[]💻 **写代码**：定义至少 3 个工具 Schema：
 
 1. `get_current_time` — 无参数，返回当前时间
 2. `calculator` — 接受 `expression` 字符串和 `operation` 枚举
 3. `search_web` — 接受 `query` 字符串（先写 Schema，不实现）
 
 📝 **笔记**：画出 `tools` 参数的 JSON 层级结构图，标注每个字段是做什么的。
+
+- [ ] 📖 精读 DeepSeek Tool Calls 指南，理解 `tools`/`tool_choice`/`tool_calls` 完整结构
+- [ ] 📖 阅读 JSON Schema 入门，理解 `type`/`properties`/`required`/`enum`
+- [ ] 📖 阅读 DeepSeek Tool Calling 中文文档中的完整 Python 示例
+- [ ] 💻 创建 `tools.py`，定义 `get_current_time` 工具的 JSON Schema（无参数）
+- [ ] 💻 定义 `calculator` 工具的 JSON Schema（`expression` + `operation` 枚举）
+- [ ] 💻 定义 `search_web` 工具的 JSON Schema（`query` 字符串）
+- [ ] 💻 发送带 `tools` 参数的 API 请求，验证 LLM 能否正确返回 `tool_calls`
+- [ ] 📝 画出 `tools` 参数的 JSON 层级结构图
 
 ---
 
@@ -99,7 +121,7 @@ API_KEY = os.getenv("DEEPSEEK_API_KEY")
 📖 **先读**（30min）：
 
 - [ReAct 论文 (Yao et al., 2022)](https://arxiv.org/abs/2210.03629) — 读 Abstract + Figure 1，理解 Thought → Action → Observation 循环
-- [OpenAI Tool Calling 完整流程](https://api-docs.deepseek.com/guides/function_calling) — 理解四步循环：send → receive tool_call → execute → append result → send again
+- [DeepSeek Tool Calls 完整流程](https://api-docs.deepseek.com/zh-cn/guides/tool_calls/) — 理解四步循环：send → receive tool_call → execute → append result → send again
 - [Anthropic Tool Use 示例（GitHub）](https://github.com/anthropics/anthropic-cookbook) — 对比 Anthropic 的 tool_use 块与 OpenAI 的 tool_calls 有什么不同，看官方 Cookbook 中的工具调用示例
 - 参考你已有的 [03.1-llm_tools_ReAct.py](Agent-demo/03.1-llm_tools_ReAct.py)
 
@@ -123,6 +145,16 @@ while step < max_steps:
 
 📝 **笔记**：画出 ReAct 循环的流程图，标注每一步数据的流向。
 
+- [ ] 📖 阅读 ReAct 论文 Abstract + Figure 1，理解 Thought → Action → Observation 循环
+- [ ] 📖 精读 DeepSeek Tool Calls 完整流程：send → receive tool_call → execute → append result → send again
+- [ ] 📖 浏览 Anthropic Cookbook 中 Tool Use 示例，对比 Anthropic 与 OpenAI 格式差异
+- [ ] 📖 阅读已有代码 `Agent-demo/03.1-llm_tools_ReAct.py`
+- [ ] 💻 实现 3 个工具的实际执行函数（`get_current_time`/`calculator`/`search_web` stub）
+- [ ] 💻 编写 `call_llm()`/`has_final_answer()`/`has_tool_calls()`/`execute_tool()` 函数
+- [ ] 💻 组装 `while True` 主循环，正确处理 messages 追加
+- [ ] 💻 测试多步推理场景（连续工具调用）
+- [ ] 📝 画出 ReAct 循环的流程图，标注数据流向
+
 ---
 
 ### Day 5 · ReAct 调试与优化 🐛
@@ -131,7 +163,7 @@ while step < max_steps:
 
 📖 **先读**（30min）：
 
-- [API 错误处理](https://api-docs.deepseek.com/quick_start/error_codes) — DeepSeek 错误码说明：429（限流）、401（认证失败）、503（服务过载）怎么处理。所有兼容 OpenAI 格式的 API 返回相同的标准 HTTP 状态码
+- [DeepSeek 限速与重试指南](https://api-docs.deepseek.com/zh-cn/quick_start/rate_limit) — 429（限流）、401（认证失败）、503（服务过载）怎么处理，含重试策略建议
 - [Tenacity 重试库](https://tenacity.readthedocs.io/en/latest/) — 指数退避重试（exponential backoff）
 - [Python Logging 官方文档](https://docs.python.org/3/howto/logging.html) — 不要用 print，用 logging 打日志
 
@@ -144,6 +176,18 @@ while step < max_steps:
 
 📝 **笔记**：记录 3 个你遇到的"Agent 差点死循环/崩溃"的场景，以及你是怎么修复的。
 
+- [ ] 📖 阅读 DeepSeek 限速与重试指南，理解 429/401/503 错误的处理方式
+- [ ] 📖 阅读 Tenacity 文档，理解指数退避重试（exponential backoff）
+- [ ] 📖 阅读 Python Logging 官方文档，学习 `logger.info`/`logger.error`
+- [ ] 💻 用 `logging` 替换所有 `print`，配置日志格式和时间戳
+- [ ] 💻 添加 `max_steps` 限制（默认 10），超限后强制退出并返回当前结果
+- [ ] 💻 添加重复工具调用检测：同一工具连续调用 ≥3 次时终止并警告
+- [ ] 💻 给 `call_llm()` 添加重试机制：最多 3 次、指数退避（1s/2s/4s）
+- [ ] 💻 给 `execute_tool()` 添加 try/except，错误时返回错误信息给 LLM 而非崩溃
+- [ ] 💻 完善日志：`[Step N] Thought/Action/Observation` 格式
+- [ ] 💻 创建 `react_loop_v2.py`，整合以上所有增强
+- [ ] 📝 记录 3 个"Agent 差点死循环/崩溃"的场景及修复方案
+
 ---
 
 ### Day 6 · 流式输出 + Token 计数
@@ -152,8 +196,8 @@ while step < max_steps:
 
 📖 **先读**（30min）：
 
-- [DeepSeek Streaming 文档](https://api-docs.deepseek.com/guides/streaming) — 理解 SSE（Server-Sent Events）和 `stream=True` 参数
-- [DeepSeek Streaming 示例](https://platform.deepseek.com/api-docs/guides/streaming) — DeepSeek 的流式实现
+- [DeepSeek Responses API 流式输出](https://api-docs.deepseek.com/zh-cn/guides/responses_api/) — 理解 SSE（Server-Sent Events）和 `stream=True` 参数，Responses API 是 DeepSeek 推荐的流式交互方式
+- [DeepSeek 思考模式（思维链）](https://api-docs.deepseek.com/zh-cn/guides/thinking_mode/) — 如使用 `deepseek-v4-pro` 等推理模型，可获取 `reasoning_content` 思维链
 - [tiktoken 库（GitHub）](https://github.com/openai/tiktoken) — Token 计数 Python 库，国内可直连。理解 token ≠ 字符，中文一个字符可能 = 2-3 个 token
 
 💻 **写代码**：
@@ -162,6 +206,14 @@ while step < max_steps:
 2. `token_counter.py`：封装一个函数，输入 messages 列表，返回估算的 token 数。**理解为什么要算 token（控制成本 + 防止超出上下文窗口）**
 
 📝 **笔记**：实测一段中文对话的 token 消耗，对比"感觉的字数"和实际 token 数。
+
+- [ ] 📖 阅读 DeepSeek Responses API 流式输出文档，理解 SSE 和 `stream=True` 参数
+- [ ] 📖 阅读 DeepSeek 思考模式文档，了解 `reasoning_content` 思维链
+- [ ] 📖 阅读 tiktoken 文档，理解 token ≠ 字符，中文一个字符可能 = 2-3 个 token
+- [ ] 💻 创建 `stream_demo.py`，用 `stream=True` 实现逐字打印效果
+- [ ] 💻 创建 `token_counter.py`，封装 `count_tokens(messages)` 函数
+- [ ] 💻 测试：输入 messages → 输出估算 token 数
+- [ ] 📝 实测一段中文对话的 token 消耗，对比"感觉的字数"和实际 token 数
 
 ---
 
@@ -185,6 +237,16 @@ while step < max_steps:
 - 这周你学到的最重要的 3 个概念是什么？
 - 你遇到的最大困难是什么？怎么解决的？
 - 把 ReAct 循环的流程图重新画一遍（用 Mermaid）
+
+- [ ] 📖 浏览 OpenAI Cookbook，了解官方最佳实践
+- [ ] 📖 阅读 Lilian Weng 的 Agent 综述博客，建立全局视野
+- [ ] 💻 创建 `week1/` 目录，整理本周所有代码
+- [ ] 💻 提取公共函数到 `week1/common.py`（`call_llm()`/工具 Schema 模板/`execute_tool()`）
+- [ ] 💻 给每个 `.py` 文件添加清晰注释和 docstring
+- [ ] 💻 `git commit -m "Week 1 完成：裸写 ReAct Agent"`
+- [ ] 📝 写 `WEEK1_NOTES.md`：最重要的 3 个概念
+- [ ] 📝 写 `WEEK1_NOTES.md`：最大的困难及解决方案
+- [ ] 📝 写 `WEEK1_NOTES.md`：用 Mermaid 重画 ReAct 循环流程图
 
 ---
 
@@ -210,6 +272,14 @@ while step < max_steps:
 💻 **写代码**：3 句话 → `model.encode()` → 3 个向量 → 两两计算余弦相似度 → 打印相似度矩阵。
 
 📝 **笔记**：用大白话解释"为什么意思相近的两句话，它们的向量也相近？"
+
+- [ ] 📖 阅读 Sentence-Transformers 文档，理解 embedding 概念和余弦相似度
+- [ ] 📖 阅读 NumPy 向量运算快速入门
+- [ ] 💻 安装 `sentence-transformers` 和 `numpy`
+- [ ] 💻 创建 `embedding_demo.py`：准备 3 句含义相近/不同的句子
+- [ ] 💻 用 `model.encode()` 将 3 句话转为向量，两两计算余弦相似度
+- [ ] 💻 打印相似度矩阵
+- [ ] 📝 用大白话解释"为什么意思相近的两句话，向量也相近"
 
 ---
 
@@ -240,6 +310,17 @@ class HybridSearcher:
 
 📝 **笔记**：用一个具体的问题，分别打印 BM25 的 Top 5、向量的 Top 5、混合后的 Top 5，观察差异。
 
+- [ ] 📖 阅读 BM25 算法原理，理解 TF 和 IDF
+- [ ] 📖 阅读 rank_bm25 文档，掌握基本用法
+- [ ] 📖 阅读 RRF 融合算法论文 Abstract，理解 `score = 1/(k + rank)`
+- [ ] 💻 安装 `rank_bm25`，准备测试文档集（至少 10 篇短文/段落）
+- [ ] 💻 创建 `hybrid_search.py`，实现 `_bm25_search()` 方法
+- [ ] 💻 实现 `_vector_search()` 方法（用 Sentence-Transformers）
+- [ ] 💻 实现 `_rrf_fusion()` 方法（k=60）
+- [ ] 💻 实现 `search()` 公开接口，整合 BM25 + 向量 + RRF
+- [ ] 💻 测试对比：BM25 Top 5 vs 向量 Top 5 vs 混合 Top 5
+- [ ] 📝 记录对比结果，分析三种方式的差异和适用场景
+
 ---
 
 ### Day 10 · Contextual Retrieval（上下文检索）
@@ -260,6 +341,16 @@ class HybridSearcher:
 4. 对比有无上下文前缀的检索命中率
 
 📝 **笔记**：用 mermaid 画出 `文档 → 分块 → 生成上下文 → 拼接 → 索引 → 检索` 的完整管道。
+
+- [ ] 📖 精读 Anthropic Contextual Retrieval 博客全文
+- [ ] 📖 了解 LangChain RecursiveCharacterTextSplitter 的用法
+- [ ] 📖 阅读 Pinecone Chunking 策略对比文章
+- [ ] 💻 准备一篇长文保存为 `.txt`，创建 `contextual_chunking.py`
+- [ ] 💻 实现按段落分块函数
+- [ ] 💻 对每个 chunk 调用 LLM 生成"上下文前缀"
+- [ ] 💻 将前缀拼到 chunk 前面，构建增强版文档列表
+- [ ] 💻 对原始 chunks 和增强 chunks 分别建索引，设计 5 个测试查询对比命中率
+- [ ] 📝 用 Mermaid 画出 Contextual Retrieval 的完整管道
 
 ---
 
@@ -285,6 +376,15 @@ class HybridSearcher:
 
 📝 **笔记**：对比"固定 500 字切分"和"按标题层级切分"的效果差异。
 
+- [ ] 📖 阅读 pypdf 文档，掌握 PDF 文本提取
+- [ ] 📖 了解 Docling（IBM）的高级 PDF→Markdown 转换功能
+- [ ] 📖 浏览 LangChain Document Loaders 生态
+- [ ] 💻 安装 `pypdf` 或 `docling`，找一份有清晰标题层级的 PDF 文档
+- [ ] 💻 创建 `pdf_loader.py`，实现 PDF 文本提取和按标题层级切分
+- [ ] 💻 输出结构化 JSON（title/level/content/children）
+- [ ] 💻 同时实现"固定 500 字切分"作为对比基准
+- [ ] 📝 对比两种切分方式的效果差异
+
 ---
 
 ### Day 12 · RAG 评估 —— LLM as Judge
@@ -306,6 +406,14 @@ class HybridSearcher:
 
 📝 **笔记**：挑出打分最低的 3 个回答，分析为什么低分，是检索不到文档还是 LLM 生成错误？
 
+- [ ] 📖 阅读 RAGAS 文档，理解 Faithfulness/Answer Relevancy/Context Precision 三个指标
+- [ ] 📖 阅读 LLM-as-Judge 论文，了解评估的优势和局限性
+- [ ] 💻 准备 10 个 `(问题, 标准答案)` 测试对，覆盖不同类型的查询
+- [ ] 💻 创建 `eval_rag.py`，对每个问题走 RAG 管道得到回答
+- [ ] 💻 编写 LLM 打分 prompt：要求输出 1-10 的分数 + 评分理由
+- [ ] 💻 计算平均分、命中率（分数 ≥7 视为命中）
+- [ ] 📝 分析打分最低的 3 个回答，找出根因（检索失败 vs 生成错误）
+
 ---
 
 ### Day 13 · 将 RAG 封装为 Agent 工具
@@ -314,7 +422,7 @@ class HybridSearcher:
 
 📖 **先读**（20min）：
 
-- [DeepSeek Tool Description 最佳实践](https://api-docs.deepseek.com/guides/function_calling) — 工具描述怎么写 LLM 才能用对
+- [DeepSeek Tool Calls 最佳实践](https://api-docs.deepseek.com/zh-cn/guides/tool_calls/) — 工具描述怎么写 LLM 才能用对
 - 回看 Day 3 的工具 Schema 定义，确保格式一致
 
 💻 **写代码**：将 HybridSearcher 封装成一个标准的 Tool Schema：
@@ -338,6 +446,14 @@ RAG_TOOL = {
 
 📝 **笔记**：为什么工具描述要写成"何时使用此工具"而不是只写"此工具做什么"？
 
+- [ ] 📖 重读 DeepSeek Tool Calls 最佳实践，重点看工具描述怎么写
+- [ ] 📖 回看 Day 3 的 `tools.py`，确认 Schema 格式一致
+- [ ] 💻 创建 `rag_tool.py`，定义 `search_knowledge_base` 工具的 JSON Schema
+- [ ] 💻 在工具描述中写清楚"何时使用此工具"
+- [ ] 💻 实现 `execute_rag_search(query)` 执行函数，调用 HybridSearcher
+- [ ] 💻 测试：让 LLM 判断是否应该调用此工具
+- [ ] 📝 回答："为什么工具描述要写成'何时使用此工具'"
+
 ---
 
 ### Day 14 · 集成测试 + 第 2 周复盘
@@ -358,6 +474,16 @@ RAG_TOOL = {
 - BM25 vs 向量检索 vs 混合检索：你实际测出来哪个更好？
 - Contextual Retrieval 有没有提升命中率？提升了多少？
 - RAG 工具的描述对 Agent 的行为影响大吗？
+
+- [ ] 📖 快速浏览 LangChain LCEL 文档，了解 `|` 管道操作符的设计思路
+- [ ] 💻 创建 `rag_agent.py`，将 RAG 工具 + ReAct Agent 集成
+- [ ] 💻 测试多步推理："2024 年诺贝尔物理学奖得主是谁？他的年龄的平方是多少？"
+- [ ] 💻 将知识库文档放入 `data/` 目录，测试 Agent 能否回答文档内问题
+- [ ] 💻 整理本周代码到 `week2/` 目录
+- [ ] 💻 `git commit -m "Week 2 完成：RAG 混合检索 + Agent 工具集成"`
+- [ ] 📝 写 `WEEK2_NOTES.md`：BM25 vs 向量 vs 混合检索实测对比
+- [ ] 📝 写 `WEEK2_NOTES.md`：Contextual Retrieval 命中率提升数据
+- [ ] 📝 写 `WEEK2_NOTES.md`：RAG 工具描述对 Agent 行为的影响分析
 
 ---
 
@@ -390,6 +516,13 @@ npx -y @modelcontextprotocol/server-filesystem /tmp
 
 📝 **笔记**：用自己的话解释"MCP 和 Function Calling 的区别"。画出 Client ↔ Server 的通信流程图。
 
+- [ ] 📖 精读 MCP 官方文档 Introduction，理解 Tools/Resources/Prompts 三大核心概念
+- [ ] 📖 阅读 MCP 架构文档，理解 Client/Server 架构和传输层（stdio/SSE）
+- [ ] 📖 阅读 MCP 安全模型文档，跟着快速入门走一遍
+- [ ] 💻 确认 Node.js 已安装，运行 `npx -y @modelcontextprotocol/server-filesystem /tmp`，观察 stdio 传输
+- [ ] 📝 用自己的话解释"MCP 和 Function Calling 的区别"
+- [ ] 📝 画出 Client ↔ Server 的通信流程图
+
 ---
 
 ### Day 16 · MCP Client 实现
@@ -409,6 +542,16 @@ npx -y @modelcontextprotocol/server-filesystem /tmp
 2. `call_tool(name, args)` — 调用指定工具
 
 📝 **笔记**：记录 MCP 协议的 JSON-RPC 消息格式（`jsonrpc`、`id`、`method`、`params`）。
+
+- [ ] 📖 阅读 MCP Python SDK README 中的 Client 示例代码
+- [ ] 📖 阅读 MCP 协议规范 - 传输层，理解 stdio JSON-RPC 消息传递
+- [ ] 📖 阅读 Python subprocess 文档，掌握 `Popen` 的 `stdin=PIPE, stdout=PIPE`
+- [ ] 💻 创建 `mcp_client.py`，用 `subprocess.Popen` 启动 MCP Server
+- [ ] 💻 实现 `send_request(method, params)` 和 `read_response()` 函数
+- [ ] 💻 实现 `initialize()` —— 发送 initialize 请求，完成握手
+- [ ] 💻 实现 `list_tools()` —— 发送 `tools/list` 请求
+- [ ] 💻 实现 `call_tool(name, args)` —— 发送 `tools/call` 请求
+- [ ] 📝 记录 MCP JSON-RPC 消息格式
 
 ---
 
@@ -445,6 +588,16 @@ app = graph.compile()
 
 📝 **笔记**：对比 LangGraph 的 Node/Edge 和你自己的 `while True` 循环。LangGraph 帮我们做了什么？有什么是你自己写才能控制的？
 
+- [ ] 📖 阅读 LangGraph 官方文档首页，看 "What is LangGraph?" 和 "Quick Start"
+- [ ] 📖 精读 LangGraph 核心概念：StateGraph/Node/Edge/ConditionalEdge/CompiledGraph
+- [ ] 📖 跟着 LangGraph Tutorial 手动敲 Agent with Tools 示例（不要复制粘贴）
+- [ ] 💻 安装 `langgraph` 和 `langchain-core`
+- [ ] 💻 创建 `langgraph_hello.py`，定义 `State(TypedDict)` 含 `messages: list`
+- [ ] 💻 实现 `chatbot(state)` node 函数，调用 LLM 返回更新
+- [ ] 💻 构建 StateGraph：add_node → set_entry_point → add_edge → compile
+- [ ] 💻 用 `app.invoke()` 测试单轮对话
+- [ ] 📝 对比 LangGraph Node/Edge 和自己手写的 `while True` 循环
+
 ---
 
 ### Day 18 · Agent 状态设计与多轮对话
@@ -470,6 +623,15 @@ class AgentState(TypedDict):
 
 📝 **笔记**：画出你的 StateGraph 结构图（用 Mermaid flowchart），标注每个 Node 的输入输出。
 
+- [ ] 📖 阅读 LangGraph State 管理文档，理解 TypedDict vs Pydantic
+- [ ] 📖 阅读 LangGraph Reducer 文档，理解 `add_messages` 自动合并机制
+- [ ] 📖 阅读 LangGraph Checkpoint 持久化文档，理解 MemorySaver
+- [ ] 💻 创建 `langgraph_agent.py`，设计 `AgentState(TypedDict)`
+- [ ] 💻 添加 `messages`/`step_count`/`tool_results` 字段
+- [ ] 💻 实现 `should_continue` 条件边 + `call_model` node + `execute_tools` node
+- [ ] 💻 用 MemorySaver 持久化对话，测试多轮对话能力
+- [ ] 📝 用 Mermaid flowchart 画出 StateGraph 结构图
+
 ---
 
 ### Day 19 · 工具集成（搜索 + 网页抓取 + 文件写入）
@@ -490,6 +652,16 @@ class AgentState(TypedDict):
 3. `save_markdown(content, filename)` — 用 `pathlib` 写入 `.md` 文件
 
 📝 **笔记**：测试：让 Agent 搜索一个话题 → 抓取搜索结果中的前 3 篇文章 → 生成一篇总结 Markdown。
+
+- [ ] 📖 阅读 Tavily Search API 文档，注册获取 API Key
+- [ ] 📖 了解 Bocha（博查）搜索 API（国内替代）
+- [ ] 📖 阅读 BeautifulSoup 4 文档和 httpx 文档
+- [ ] 💻 创建 `tools_package/` 目录和 `__init__.py`
+- [ ] 💻 实现 `web_search(query)` 函数 + JSON Schema
+- [ ] 💻 实现 `fetch_webpage(url)` 函数 + JSON Schema
+- [ ] 💻 实现 `save_markdown(content, filename)` 函数 + JSON Schema
+- [ ] 💻 端到端测试：搜索话题 → 抓取前 3 篇文章 → 生成总结 Markdown
+- [ ] 📝 记录测试结果和遇到的问题
 
 ---
 
@@ -524,6 +696,16 @@ def execute_in_sandbox(code: str, timeout: int = 30) -> dict:
 
 📝 **笔记**：对比 `exec()`（危险）和 E2B 沙箱（安全）的区别。准备面试回答："Agent 执行代码时如何防止注入攻击？"
 
+- [ ] 📖 阅读 E2B 官方文档，注册账号获取 API Key
+- [ ] 📖 精读 E2B Code Interpreter 快速入门，理解 create → exec_cell → get output
+- [ ] 📖 阅读 E2B Python SDK API 参考（文件系统/包安装/网络策略）和安全机制文档
+- [ ] 💻 安装 `e2b-code-interpreter`，创建 `e2b_executor.py`
+- [ ] 💻 实现 `execute_in_sandbox(code, timeout)` 函数
+- [ ] 💻 测试沙箱执行：简单计算 / 安装第三方包 / 文件读写
+- [ ] 💻 定义 `python_repl` 工具的 JSON Schema，挂到 LangGraph Agent 中
+- [ ] 💻 测试 Agent 调用沙箱执行代码（如"帮我算一下 123*456"）
+- [ ] 📝 对比 `exec()` vs E2B 沙箱，准备面试回答
+
 ---
 
 ### Day 21 · 第 3 周复盘 + 项目打包
@@ -552,6 +734,17 @@ CMD ["python", "main.py"]
 - MCP vs 直接 Function Calling：你觉得各有什么优缺点？
 - LangGraph vs 手写 while 循环：什么场景用哪个？
 - E2B 沙箱：你实际跑了什么代码？有没有遇到超时或网络问题？
+
+- [ ] 📖 阅读 Docker 入门文档，理解 Image/Container/Dockerfile
+- [ ] 📖 阅读 Dockerfile 最佳实践（多阶段构建/层缓存）
+- [ ] 📖 了解 Python Docker 镜像选择（slim vs alpine）
+- [ ] 💻 生成 `requirements.txt`，编写 `Dockerfile`（python:3.11-slim）
+- [ ] 💻 `docker build -t ai-agent .` 构建镜像并验证启动
+- [ ] 💻 整理本周代码到 `week3/` 目录
+- [ ] 💻 `git commit -m "Week 3 完成：MCP Client + LangGraph Agent + E2B 沙箱"`
+- [ ] 📝 写 `WEEK3_NOTES.md`：MCP vs Function Calling 优缺点对比
+- [ ] 📝 写 `WEEK3_NOTES.md`：LangGraph vs 手写 while 循环场景分析
+- [ ] 📝 写 `WEEK3_NOTES.md`：E2B 沙箱实测记录
 
 ---
 
@@ -594,6 +787,16 @@ async def health():
 
 📝 **笔记**：用 `curl` 或 Postman 测试 3 个路由，确保每个都返回正确的状态码和 JSON 结构。
 
+- [ ] 📖 阅读 FastAPI 官方文档：First Steps → Path Parameters → Request Body → Response Model
+- [ ] 📖 阅读 FastAPI Streaming Response 文档（SSE 流式输出）
+- [ ] 📖 阅读 Pydantic V2 文档，掌握 BaseModel 请求/响应校验
+- [ ] 💻 安装 `fastapi`、`uvicorn`、`pydantic`
+- [ ] 💻 创建 `fastapi_agent/main.py`，定义 `ChatRequest`/`ChatResponse` Pydantic 模型
+- [ ] 💻 实现 `POST /chat` 路由 —— 调用 LangGraph Agent 返回响应
+- [ ] 💻 实现 `GET /history/{session_id}` 路由和 `GET /health` 路由
+- [ ] 💻 `uvicorn fastapi_agent.main:app --reload` 启动服务
+- [ ] 📝 用 curl/Postman 测试 3 个路由，确认状态码和 JSON 结构
+
 ---
 
 ### Day 23 · 异步改造 + 性能对比
@@ -614,6 +817,14 @@ async def health():
 3. 输出对比表格（P50 / P95 / P99 延迟）
 
 📝 **笔记**：把性能对比数据填入笔记。异步提速了多少？为什么有些操作异步后反而没变化？
+
+- [ ] 📖 精读 FastAPI 异步指南，理解 `async def` vs `def`、I/O 密集型 vs CPU 密集型
+- [ ] 📖 阅读 httpx AsyncClient 文档和 Python asyncio 文档，理解 Python GIL 限制
+- [ ] 💻 将所有 I/O 操作改为 `async` + `httpx.AsyncClient`
+- [ ] 💻 创建 `async_vs_sync_benchmark.py`，准备 10 个测试查询
+- [ ] 💻 实现同步和异步版本基准测试
+- [ ] 💻 输出对比表格：P50 / P95 / P99 延迟
+- [ ] 📝 分析异步提速效果，解释哪些操作异步后没变化的原因
 
 ---
 
@@ -654,6 +865,15 @@ def cache(ttl: int = 300):
 
 📝 **笔记**：实测同一个问题问两次，第二次的响应时间差多少？讨论"精确缓存"和"语义缓存"的区别。
 
+- [ ] 📖 阅读 Redis 数据类型文档（Strings/Hashes/Sets）
+- [ ] 📖 阅读 redis-py 文档，掌握 `get`/`set`/`expire`/`delete`
+- [ ] 📖 了解 GPTCache 语义缓存机制
+- [ ] 💻 安装 Redis（Docker: `docker run -d -p 6379:6379 redis:7-alpine`）和 `redis-py`
+- [ ] 💻 创建 `cache_decorator.py`，实现精确缓存装饰器（MD5 参数 → Redis）
+- [ ] 💻 支持 TTL 过期时间配置，将缓存装饰器应用到 `/chat` 路由
+- [ ] 💻 测试：同一个问题问两次，对比响应时间
+- [ ] 📝 对比"精确缓存"和"语义缓存"的区别和适用场景
+
 ---
 
 ### Day 25 · 可观测性（LangSmith + Prometheus）
@@ -678,6 +898,14 @@ def cache(ttl: int = 300):
    - `tool_call_errors_total`（Counter）— 工具调用失败次数
 
 📝 **笔记**：截图 LangSmith 的 Trace 视图，标注每一步（LLM 调用、工具调用、最终回答）的耗时。
+
+- [ ] 📖 阅读 LangSmith Tracing 快速上手，理解 Runs/Traces/Spans 概念
+- [ ] 📖 阅读 Prometheus Python Client 文档（Counter/Histogram/Gauge）和命名规范
+- [ ] 📖 了解 FastAPI Prometheus Instrumentator 集成
+- [ ] 💻 注册 LangSmith 账号，设置 `LANGCHAIN_TRACING_V2=true`，跑一次对话看调用链
+- [ ] 💻 创建 `observability.py`，添加 3 个自定义 Counter 指标
+- [ ] 💻 集成 `prometheus-fastapi-instrumentator`，暴露 `/metrics` 端点
+- [ ] 📝 截图 LangSmith Trace 视图，标注各步耗时
 
 ---
 
@@ -715,6 +943,16 @@ async def test_agent_response(case):
 ```
 
 📝 **笔记**：跑一遍测试，记录通过的条数和失败的原因。修复所有失败后重新跑，截图"全绿"的结果。
+
+- [ ] 📖 阅读 pytest 官方文档（fixtures/parametrize/assertions）
+- [ ] 📖 阅读 pytest-asyncio 和 pytest-timeout 文档
+- [ ] 📖 了解 GitHub Actions Python 测试 CI 配置
+- [ ] 💻 安装 `pytest`、`pytest-asyncio`、`pytest-timeout`
+- [ ] 💻 创建 `test_regression.py`，设计 10 条测试用例
+- [ ] 💻 测试覆盖：简单问答 / 工具调用 / 多步推理 / 错误处理 / 超时
+- [ ] 💻 用 `@pytest.mark.parametrize` 和 `@pytest.mark.timeout(30)` 参数化
+- [ ] 💻 `pytest test_regression.py -v` 运行测试
+- [ ] 📝 记录通过/失败数量，修复所有失败，截图"全绿"结果
 
 ---
 
@@ -941,9 +1179,13 @@ services:
 
 | 类别 | 名称                                     | 链接 | 优先级 |
 | :----- | :----------------------------------------- | :----- | :------- |
-| **LLM API**     | DeepSeek API 文档                        | `https://platform.deepseek.com/api-docs`     | ⭐⭐⭐ |
-| **LLM API**     | DeepSeek API 文档（兼容 OpenAI 格式）    | `https://api-docs.deepseek.com/`     | ⭐⭐⭐ |
-| **LLM API**     | DeepSeek Function Calling 指南           | `https://api-docs.deepseek.com/guides/function_calling`     | ⭐⭐⭐ |
+| **LLM API**     | DeepSeek API 文档首页（快速开始）        | `https://api-docs.deepseek.com/zh-cn/`     | ⭐⭐⭐ |
+| **LLM API**     | DeepSeek Chat Completion 创建接口        | `https://api-docs.deepseek.com/zh-cn/api/create-chat-completion/`     | ⭐⭐⭐ |
+| **LLM API**     | DeepSeek Tool Calls 指南（中文）         | `https://api-docs.deepseek.com/zh-cn/guides/tool_calls/`     | ⭐⭐⭐ |
+| **LLM API**     | DeepSeek Responses API（流式输出）       | `https://api-docs.deepseek.com/zh-cn/guides/responses_api/`     | ⭐⭐   |
+| **LLM API**     | DeepSeek 思考模式（思维链）              | `https://api-docs.deepseek.com/zh-cn/guides/thinking_mode/`     | ⭐⭐   |
+| **LLM API**     | DeepSeek 限速与重试                      | `https://api-docs.deepseek.com/zh-cn/quick_start/rate_limit`     | ⭐⭐   |
+| **LLM API**     | DeepSeek 模型与价格                      | `https://api-docs.deepseek.com/zh-cn/quick_start/pricing/`     | ⭐⭐   |
 | **LLM API**     | Anthropic Cookbook（GitHub，国内可直连） | `https://github.com/anthropics/anthropic-cookbook`     | ⭐⭐   |
 | **协议**     | MCP 官方文档                             | `https://modelcontextprotocol.io/introduction`     | ⭐⭐⭐ |
 | **协议**     | MCP 协议规范 (详细)                      | `https://spec.modelcontextprotocol.io/`     | ⭐⭐   |
