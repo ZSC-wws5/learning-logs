@@ -1,9 +1,5 @@
-from func import top_word
-from func import filter_even
-from func import group_by_len
-from func import flatten
-from func import invert_mapping
-from client import fetch_repo
+from .func import top_word,filter_even,group_by_len,flatten,invert_mapping
+from .client import fetch_repo
 
 dic = {
     "apple": 5,

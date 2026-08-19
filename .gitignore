@@ -2,6 +2,7 @@
 venv/
 __pycache__/
 *.pyc
+# __init__.py
 
 # 环境变量（不要上传到 Git，里面可能有 API Key）
 .env
@@ -26,4 +27,4 @@ temp/
 
 # 其他
 示例代码/
-learning-plans/
+learning_plans/
