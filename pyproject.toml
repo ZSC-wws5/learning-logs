@@ -1,8 +1,8 @@
 [project]
 name = "agent"
 version = "0.1.0"
-description = "Add your description here"
-readme = "README.md"
+description = "learning logs"
+readme = "README_zh.md"
 requires-python = ">=3.11"
 dependencies = [
     "aiohappyeyeballs==2.6.1",
@@ -47,3 +47,20 @@ dependencies = [
     "uvicorn==0.52.1",
     "yarl==1.22.0",
 ]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.16.4",
+]
+
+[project.scripts]
+file-report = "file_report.main:main"
+
+[tool.uv]
+package = true
+
+[tool.setuptools]
+packages = ["file_report"]
+
+[tool.ruff]
+line-length = 100

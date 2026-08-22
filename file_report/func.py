@@ -1,6 +1,6 @@
-from collections import defaultdict
-from collections import Counter
 import re
+from collections import Counter, defaultdict
+
 
 # 1. 统计单词词频，取前 n 名
 def top_word(text : str, n: int = 3) -> list[tuple[str, int]]:

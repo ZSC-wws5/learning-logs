@@ -1,7 +1,9 @@
-from .func import top_word,filter_even,group_by_len,flatten,invert_mapping
+import logging
+
 from .client import fetch_repo
 from .config import Settings
-import logging
+from .func import top_word
+
 
 def build_report(settings: Settings) -> str:
     data = fetch_repo(settings)

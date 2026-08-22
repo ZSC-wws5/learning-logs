@@ -1,7 +1,9 @@
-import httpx
-import certifi
-import time
 import logging
+import time
+
+import certifi
+import httpx
+
 from .config import Settings
 
 logger = logging.getLogger("HTTP Request")
